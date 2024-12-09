@@ -660,7 +660,7 @@ ui <- navbarPage(
              # Espacio de separación con una columna vacía
              column(
                width = 12,
-               style = "height: 50px;"  # Columna vacía para separar
+               style = "height: 50px;" 
              )),
              fluidRow(
              
@@ -984,14 +984,14 @@ server <- function(input, output ,session) {
 
   #-------------SIMULACION
   
-  # Filtrar los departamentos con suficientes reseñas (p. ej., más de 10 reseñas)
+  # Filtrar los departamentos con suficientes reseñas 
   observeEvent(datos, {
     dept_count <- datos %>%
       group_by(Class.Name) %>%
       tally() %>%
-      filter(n > 10)  # Cambia 10 por el número mínimo de reseñas que deseas
+      filter(n > 10)  
     
-    # Actualizar las opciones del selectInput con los departamentos filtrados
+   
     updateSelectInput(session, "class_name", 
                       choices = dept_count$Class.Name, 
                       selected = dept_count$Class.Name[1])
@@ -999,7 +999,7 @@ server <- function(input, output ,session) {
   
   # Filtrar las reseñas según el departamento seleccionado
   filtered_reviews <- reactive({
-    req(input$class_name)  # Asegura que el input esté disponible
+    req(input$class_name)  
     datos %>%
       filter(Class.Name == input$class_name) %>%
       mutate(ReviewText = Review.Text) %>%
@@ -1047,14 +1047,14 @@ server <- function(input, output ,session) {
     # Ahora sumamos todas las ganancias netas para obtener la ganancia neta general
     total_ganancia <- sum(ganancias_por_reseña$ganancia_total, na.rm = TRUE)
     
-    total_ganancia  # Devolvemos la ganancia neta general
+    total_ganancia  
   })
   
-  # Mostrar la ganancia neta general
+
   output$ganancia_neta_general <- renderUI({
-    req(sentiment_scores_general())  # Asegura que sentiment_scores_general() tenga datos
+    req(sentiment_scores_general())  
     
-    ganancia <- sentiment_scores_general()  # Total de la ganancia neta general
+    ganancia <- sentiment_scores_general()  
     
     # Si no hay datos, mostramos un mensaje por defecto
     if (is.null(ganancia) || length(ganancia) == 0) {
@@ -1063,7 +1063,7 @@ server <- function(input, output ,session) {
       )
     }
     
-    # Cambiar el color y el icono según el valor de la ganancia neta
+   
     color <- ifelse(ganancia > 0, "green", ifelse(ganancia < 0, "red", "gray"))
     icon <- ifelse(ganancia > 0, "check-circle", ifelse(ganancia < 0, "times-circle", "circle"))
     
